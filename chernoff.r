@@ -41,8 +41,8 @@ df <- dplyr::left_join(df, df_bl_b, by= c("Kürzel" = "Land"))
 
 
 #Building data frame for Chernoff faces
-chernoff <- matrix(nrow = 16: )
+chernoff <- matrix(nrow = 16, ncol = 15, rnorm(16 * 15))
 
 #Chernoff plot
 
-faces()
+faces(chernoff)
