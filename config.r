@@ -1,6 +1,7 @@
 
 
 library(rvest)
+library(purrr)
 
 config <- list()
 

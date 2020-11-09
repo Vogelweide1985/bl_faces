@@ -23,3 +23,18 @@ df_bl_a <- as.data.frame(df_bl_a)
 # Get WIKI BL Table wirtschaft
 df_bl_b <- html_table(tables[2], fill = F, dec= ",")
 df_bl_b <- as.data.frame(df_bl_b)
+df_bl_b <- df_bl_b[-nrow(df_bl_b), ]
+
+
+#Function to correct weird number output
+trim_table <- function(x) {
+   x <- trimws(x, whitespace = "0")
+   x <- gsub("\\..*","",x)
+}
+
+
+df_bl_b <- map_df(df_bl_b, trim_table)
+
+
+
+#Chernoff
