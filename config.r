@@ -1,6 +1,8 @@
 
-library(XML)
+
+library(rvest)
 
 config <- list()
 
-config[["wiki_page"]] <- "https://de.wikipedia.org/wiki/Liste_der_Ministerpr%C3%A4sidenten_der_deutschen_L%C3%A4nder"
+config[["url"]] <- "https://de.wikipedia.org/wiki/Liste_der_Ministerpräsidenten_der_deutschen_Länder"
+config[["url_bl"]] <- "https://de.wikipedia.org/wiki/Land_(Deutschland)"
