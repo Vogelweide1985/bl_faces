@@ -19,12 +19,13 @@ tables<-html_nodes(file, "table")
 # Get WIKI BL Table Allgemein
 df_bl_a <- html_table(tables[1], fill = TRUE)
 df_bl_a <- as.data.frame(df_bl_a)
+df_bl_a <- df_bl_a[-nrow(df_bl_a), ]
 
 # Get WIKI BL Table wirtschaft
 df_bl_b <- html_table(tables[2], fill = F, dec= ",")
 df_bl_b <- as.data.frame(df_bl_b)
-df_bl_b <- df_bl_b[-nrow(df_bl_b), ]
-
+df_bl_b <- df_bl_b[-nrow(df_bl_b), ] # EU
+df_bl_b <- df_bl_b[-nrow(df_bl_b), ] # DE
 
 #Function to correct weird number output
 trim_table <- function(x) {
@@ -39,5 +40,9 @@ df <- dplyr::left_join(df_mp, df_bl_a, by = c("Land"))
 df <- dplyr::left_join(df, df_bl_b, by= c("Kürzel" = "Land"))  
 
 
+#Building data frame for Chernoff faces
+chernoff <- matrix(nrow = 16: )
 
-#Chernoff
+#Chernoff plot
+
+faces()
