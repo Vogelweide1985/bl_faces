@@ -35,6 +35,9 @@ trim_table <- function(x) {
 
 df_bl_b <- map_df(df_bl_b, trim_table)
 
+df <- dplyr::left_join(df_mp, df_bl_a, by = c("Land"))   
+df <- dplyr::left_join(df, df_bl_b, by= c("Kürzel" = "Land"))  
+
 
 
 #Chernoff
