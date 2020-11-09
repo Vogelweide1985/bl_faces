@@ -61,7 +61,7 @@ df$Amtsantritt <-  ymd(Sys.Date()) -  df$Amtsantritt
 
 
 #Building Mouth
-df$schulden_reduktion <- as.numeric(df$Schulden..2012.in.Mrd....18.) - 
+df$schulden_reduktion <- as.numeric(df$Schulden..2012.in.Mrd....18.) /
    as.numeric(df$Schulden..31.12.2018.in.Mrd....20.)
 
 
@@ -75,10 +75,13 @@ chernoff[, 5] <- as.numeric(df$Schulden..2012.in.Mrd....18.)  # Schulden 2018
 chernoff[, 6] <- df[, "schulden_reduktion"] # Prozentualer Schuldenrueckgang 2018/2012
 chernoff[, 12] <- df[, "vorname_n"] # Länge Vorname
 chernoff[, 13] <- df[, "nachname_n"] # Länge Nahcname
-chernoff[, 14] <- df[, "Geburts.datum"] # Amtsdauerin Tagen
+chernoff[, 14] <- df[, "Amtsantritt"] # Amtsdauerin Tagen
 chernoff[, 15] <- df[, "Geburts.datum"] # Alter in Tagen
+
+
+chernoff <- apply(chernoff, 2, normalize)
 
 #Chernoff plot
 
-faces(chernoff, scale = T, face.type = 0, labels = df$Kürzel)
+faces(chernoff, scale = F, face.type = 0, labels = df$Kürzel)
 
