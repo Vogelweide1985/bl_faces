@@ -42,13 +42,12 @@ df <- dplyr::left_join(df, df_bl_b, by= c("Kürzel" = "Land"))
 # Building variables
 
 # Building nose, #lenght of vorname und nachname
-temp <- data.frame(matrix(unlist(test ), nrow=length(test ), byrow=T))
+temp <- data.frame(matrix(unlist(df$Regierungs.chef.x ), nrow=length(df ), byrow=T))
 df[, "vorname"] <- as.character(temp[1,])
 df[, "nachname"] <- as.character(temp[2,])
 df[, "vorname_n"] <- nchar(df[, "vorname"])
 df[, "nachname_n"] <-nchar(df[, "nachname"])
 
-data.frame(matrix(unlist(test ), nrow=length(test ), byrow=T))
 
 
 #Bulding ear, 
@@ -62,8 +61,8 @@ df$Amtsantritt <-  ymd(Sys.Date()) -  df$Amtsantritt
 
 
 #Building Mouth
-df$schulden_reduktion <- as.numeric(df$Schulden..31.12.2018.in.Mrd....20.)/ 
-   as.numeric(df$Schulden..2012.in.Mrd....18.) 
+df$schulden_reduktion <- as.numeric(df$Schulden..2012.in.Mrd....18.) - 
+   as.numeric(df$Schulden..31.12.2018.in.Mrd....20.)
 
 
 #Building data frame for Chernoff faces
@@ -81,5 +80,5 @@ chernoff[, 15] <- df[, "Geburts.datum"] # Alter in Tagen
 
 #Chernoff plot
 
-faces(chernoff, scale = T, face.type = 0)
+faces(chernoff, scale = T, face.type = 0, labels = df$Kürzel)
 
