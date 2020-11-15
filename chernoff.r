@@ -63,29 +63,39 @@ df$Amtsantritt <-  ymd(Sys.Date()) -  df$Amtsantritt
 
 
 #Building Mouth
-df$schulden_reduktion <- as.numeric(df$Schulden..31.12.2018.in.Mrd....20.) / 
-   as.numeric(df$Schulden..2012.in.Mrd....18.) 
+df$schulden_reduktion <- -1*(as.numeric(df$Schulden..31.12.2018.in.Mrd....20.) / 
+   as.numeric(df$Schulden..2012.in.Mrd....18.) )
+
+
 
 
 
 #Building data frame for Chernoff faces
-chernoff <- matrix(nrow = 16, ncol = 15, rnorm(16 * 15), dimnames = list(df$Kürzel))
+chernoff <- matrix(nrow = 16, ncol = 15, rnorm(16 * 15))
 
 chernoff[, 1] <- as.numeric(gsub(",", ".", df[, "Ein.wohner.Mio...12."])) # Einwohner
 chernoff[, 2] <- df[, "Fläche.km²..12."] # Fläche
-chernoff[, 3] <- df[,"Ein.wohnerje.km².12."]
+chernoff[, 3] <- df[,"Ein.wohnerje.km².12."] # Einwohner je Fläche
 chernoff[, 4] <- as.numeric(df$Schulden..31.12.2018.in.Mrd....20.) # Schulden 2018
 chernoff[, 5] <- as.numeric(df$Schulden..2012.in.Mrd....18.)  # Schulden 2018
-chernoff[, 6] <- df[, "schulden_reduktion"] # Prozentualer Schuldenrueckgang 2018/2012
+chernoff[, 6] <-  df[, "schulden_reduktion"] # Prozentualer Schuldenrueckgang 2018/2012
+chernoff[, 7] <- gsub(",", ".", df[, "BIP..2018.in.Mrd....16."]) # BIP
+chernoff[, 8] <- df[, "Pro.Kopf..2018.in...16."] #  BIP Pro Kopf einkommen
+chernoff[, 9] <- df[, "EK.Kin...17."] #  Pro Kopf einkommen
+chernoff[, 10] <- df[, "AQ.21."] #  Arbeitslosenquote
+chernoff[, 11] <- gsub(",", ".", df[, "Ausländer....13."]) #  Ausländer
 chernoff[, 12] <- df[, "vorname_n"] # Länge Vorname
 chernoff[, 13] <- df[, "nachname_n"] # Länge Nahcname
 chernoff[, 14] <- df[, "Amtsantritt"] # Amtsdauerin Tagen
 chernoff[, 15] <- df[, "Geburts.datum"] # Alter in Tagen
 
 
-#chernoff <- apply(chernoff, 2, normalize)
-#chernoff <- apply(chernoff, 2, scale)
-#Chernoff plot
+chernoff <- apply(chernoff, 2, as.numeric)
+chernoff <- apply(chernoff, 2, scale)
 
+dimnames(chernoff) <- list(df$Kürzel)
+#Chernoff plot
 faces(chernoff, scale = F, face.type = 0, labels = df$Kürzel)
 
+faces
+spline()
