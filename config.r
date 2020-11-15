@@ -9,8 +9,4 @@ config <- list()
 config[["url"]] <- "https://de.wikipedia.org/wiki/Liste_der_Ministerpräsidenten_der_deutschen_Länder"
 config[["url_bl"]] <- "https://de.wikipedia.org/wiki/Land_(Deutschland)"
 
-
-#Normalizing fun
-normalize <- function(x) {
-   return ((x - min(x)) / (max(x) - min(x)))
-}
+set.seed(812134)
