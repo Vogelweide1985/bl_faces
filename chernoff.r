@@ -42,7 +42,9 @@ df <- dplyr::left_join(df, df_bl_b, by= c("Kürzel" = "Land"))
 # Building variables
 
 # Building nose, #lenght of vorname und nachname
-temp <- data.frame(matrix(unlist(df$Regierungs.chef.x ), nrow=length(df ), byrow=T))
+
+temp <- data.frame(matrix((unlist(strsplit(df$Regierungs.chef.x, split = " " ))),
+                          nrow=nrow(df ), byrow=T))
 df[, "vorname"] <- as.character(temp[1,])
 df[, "nachname"] <- as.character(temp[2,])
 df[, "vorname_n"] <- nchar(df[, "vorname"])
@@ -61,15 +63,17 @@ df$Amtsantritt <-  ymd(Sys.Date()) -  df$Amtsantritt
 
 
 #Building Mouth
-df$schulden_reduktion <- as.numeric(df$Schulden..2012.in.Mrd....18.) /
-   as.numeric(df$Schulden..31.12.2018.in.Mrd....20.)
+df$schulden_reduktion <- as.numeric(df$Schulden..31.12.2018.in.Mrd....20.) / 
+   as.numeric(df$Schulden..2012.in.Mrd....18.) 
+
 
 
 #Building data frame for Chernoff faces
-chernoff <- matrix(nrow = 16, ncol = 15, rnorm(16 * 15))
+chernoff <- matrix(nrow = 16, ncol = 15, rnorm(16 * 15), dimnames = list(df$Kürzel))
 
 chernoff[, 1] <- as.numeric(gsub(",", ".", df[, "Ein.wohner.Mio...12."])) # Einwohner
 chernoff[, 2] <- df[, "Fläche.km²..12."] # Fläche
+chernoff[, 3] <- df[,"Ein.wohnerje.km².12."]
 chernoff[, 4] <- as.numeric(df$Schulden..31.12.2018.in.Mrd....20.) # Schulden 2018
 chernoff[, 5] <- as.numeric(df$Schulden..2012.in.Mrd....18.)  # Schulden 2018
 chernoff[, 6] <- df[, "schulden_reduktion"] # Prozentualer Schuldenrueckgang 2018/2012
@@ -79,8 +83,8 @@ chernoff[, 14] <- df[, "Amtsantritt"] # Amtsdauerin Tagen
 chernoff[, 15] <- df[, "Geburts.datum"] # Alter in Tagen
 
 
-chernoff <- apply(chernoff, 2, normalize)
-
+#chernoff <- apply(chernoff, 2, normalize)
+#chernoff <- apply(chernoff, 2, scale)
 #Chernoff plot
 
 faces(chernoff, scale = F, face.type = 0, labels = df$Kürzel)
