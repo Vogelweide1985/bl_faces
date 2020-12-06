@@ -94,8 +94,14 @@ chernoff <- apply(chernoff, 2, as.numeric)
 chernoff <- apply(chernoff, 2, scale)
 
 dimnames(chernoff) <- list(df$Kürzel)
-#Chernoff plot
-faces(chernoff, scale = F, face.type = 0, labels = df$Kürzel)
+#chernoff <- chernoff[ sample(nrow(chernoff)),] # randomize
 
-faces
-spline()
+#Chernoff plot
+#par(bg = NA)
+a <- faces(chernoff, scale = F, face.type = 0)
+
+png('chernof.png',width=1100,height=800,units="px",bg = "transparent")
+plot.faces(a, face.type = 0, byrow = T, labels = NA)
+
+dev.off()
+
